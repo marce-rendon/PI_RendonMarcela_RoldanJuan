@@ -24,7 +24,7 @@ public class PacienteController {
     @GetMapping("/index")
     public String buscarPaciente(Model model, @RequestParam Integer id){
         Paciente paciente = pacienteService.buscarPorId(id);
-        logger.info("Paciente devuelto al controller: " + paciente);
+        logger.info("Paciente devuelto al controller proveniente del service: " + paciente);
 
         model.addAttribute("nombre", paciente.getNombre());
         model.addAttribute("apellido", paciente.getApellido());
