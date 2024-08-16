@@ -1,8 +1,7 @@
-package dh.backendpi.clinicaOdontologica.controller;
-import dh.backendpi.clinicaOdontologica.model.Paciente;
-import dh.backendpi.clinicaOdontologica.service.PacienteService;
-import dh.backend.clinica.model.Paciente;
-import dh.backend.clinica.service.PacienteService;
+package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
+
+import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.service.PacienteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

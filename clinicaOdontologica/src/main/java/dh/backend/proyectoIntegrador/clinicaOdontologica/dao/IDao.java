@@ -1,4 +1,4 @@
-package dh.backendpi.clinicaOdontologica.dao;
+package dh.backend.proyectoIntegrador.clinicaOdontologica.dao;
 
 import java.util.List;
 

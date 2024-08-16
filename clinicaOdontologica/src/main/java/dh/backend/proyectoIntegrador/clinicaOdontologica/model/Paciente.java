@@ -1,4 +1,4 @@
-package dh.backendpi.clinicaOdontologica.model;
+package dh.backend.proyectoIntegrador.clinicaOdontologica.model;
 
 import java.time.LocalDate;
 

@@ -1,8 +1,7 @@
-package dh.backendpi.clinicaOdontologica.service;
+package dh.backend.proyectoIntegrador.clinicaOdontologica.service;
 
-
-import dh.backend.clinica.dao.IDao;
-import dh.backend.clinica.model.Paciente;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.IDao;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,10 +1,10 @@
-package dh.backendpi.clinicaOdontologica.dao.impl;
+package dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl;
 
 
-import dh.backend.clinica.dao.IDao;
-import dh.backend.clinica.db.H2Connection;
-import dh.backend.clinica.model.Domicilio;
-import dh.backend.clinica.model.Paciente;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.IDao;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Domicilio;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
