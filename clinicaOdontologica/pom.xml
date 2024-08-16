@@ -8,11 +8,11 @@
 		<version>3.3.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>dh.backendpi</groupId>
+	<groupId>dh.backend.proyectoIntegrador.clinicaOdontologica</groupId>
 	<artifactId>clinicaOdontologica</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>clinicaOdontologica</name>
-	<description>PI Marcela Rendon- Juan, Backend </description>
+	<description>Proyecto Integrador Marcela Rendon - Juan Roldán, Backend 1</description>
 	<url/>
 	<licenses>
 		<license/>
