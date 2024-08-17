@@ -1,6 +1,5 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl;
 
-
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.IDao;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Domicilio;
@@ -8,8 +7,8 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;

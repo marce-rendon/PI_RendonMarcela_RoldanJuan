@@ -1,10 +1,11 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
-import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl.DaoH2Domicilio;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.PacienteService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ public class PacienteController {
 
     private PacienteService pacienteService;
 
-    public static final Logger logger = LoggerFactory.getLogger(DaoH2Domicilio.class);
+    public static final Logger logger = LoggerFactory.getLogger(PacienteController.class);
 
     public PacienteController(PacienteService pacienteService) {
         this.pacienteService = pacienteService;

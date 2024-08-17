@@ -2,19 +2,19 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.IDao;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Domicilio;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Odontologo;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class DaoH2Odontologo implements IDao<Odontologo> {
-
     public static final Logger logger = LoggerFactory.getLogger(DaoH2Odontologo.class);
     public static final String INSERT = "INSERT INTO ODONTOLOGOS VALUES (DEFAULT,?,?,?)";
     public static final String SELECT_ID = "SELECT * FROM ODONTOLOGOS WHERE ID = ?";
