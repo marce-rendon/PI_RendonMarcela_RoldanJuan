@@ -1,6 +1,5 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl;
 
-
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.IDao;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Domicilio;

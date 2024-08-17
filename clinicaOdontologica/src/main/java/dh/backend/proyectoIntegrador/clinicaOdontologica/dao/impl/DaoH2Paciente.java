@@ -18,7 +18,7 @@ import java.util.List;
 
 @Component
 public class DaoH2Paciente implements IDao<Paciente> {
-    public static final Logger logger = LoggerFactory.getLogger(DaoH2Domicilio.class);
+    public static final Logger logger = LoggerFactory.getLogger(DaoH2Paciente.class);
     public static final String INSERT = "INSERT INTO PACIENTES VALUES(DEFAULT,?,?,?,?,? )";
     public static final String SELECT_ID = "SELECT * FROM PACIENTES WHERE ID = ?";
     public static final String SELECT_ALL = "SELECT * FROM PACIENTES";
@@ -30,9 +30,11 @@ public class DaoH2Paciente implements IDao<Paciente> {
         Connection connection = null;
         Paciente pacienteARetornar = null;
         Domicilio domicilioAuxiliar = daoH2Domicilio.guardar(paciente.getDomicilio());
+
         try{
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
+
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, paciente.getApellido());
             preparedStatement.setString(2, paciente.getNombre());
@@ -41,13 +43,14 @@ public class DaoH2Paciente implements IDao<Paciente> {
             preparedStatement.setInt(5, domicilioAuxiliar.getId());
             preparedStatement.executeUpdate();
             connection.commit();
+
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()){
                 Integer id = resultSet.getInt(1);
                 pacienteARetornar = new Paciente(id, paciente.getApellido(), paciente.getNombre(),
                         paciente.getDni(), paciente.getFechaIngreso(), domicilioAuxiliar);
             }
-            logger.info("paciente "+ pacienteARetornar);
+            logger.info("Paciente guardado en la base de datos: " + pacienteARetornar);
 
         }catch (Exception e){
             if(connection != null){
@@ -80,10 +83,12 @@ public class DaoH2Paciente implements IDao<Paciente> {
     public Paciente buscarPorId(Integer id) {
         Connection connection = null;
         Paciente pacienteEncontrado = null;
+
         try{
             connection = H2Connection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ID);
             preparedStatement.setInt(1, id);
+
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 Integer idDB = resultSet.getInt(1);
@@ -96,9 +101,9 @@ public class DaoH2Paciente implements IDao<Paciente> {
                 pacienteEncontrado = new Paciente(idDB, apellido, nombre, dni, fechaIngreso, domicilio);
             }
             if(pacienteEncontrado!= null){
-                logger.info("paciente encontrado "+ pacienteEncontrado);
+                logger.info("Paciente encontrado: "+ pacienteEncontrado);
             } else {
-                logger.info("paciente no encontrado");
+                logger.info("El paciente no se encontró en la base de datos.");
             }
 
         }catch (Exception e){
@@ -120,9 +125,11 @@ public class DaoH2Paciente implements IDao<Paciente> {
         Connection connection = null;
         List<Paciente> pacientes = new ArrayList<>();
         Paciente pacienteDesdeDB = null;
+
         try{
             connection = H2Connection.getConnection();
             Statement statement = connection.createStatement();
+
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()){
                 Integer idDB = resultSet.getInt(1);
@@ -133,8 +140,10 @@ public class DaoH2Paciente implements IDao<Paciente> {
                 Integer id_domicilio = resultSet.getInt(6);
                 Domicilio domicilio = daoH2Domicilio.buscarPorId(id_domicilio);
                 pacienteDesdeDB = new Paciente(idDB, apellido, nombre, dni, fechaIngreso, domicilio);
-                logger.info("paciente"+pacienteDesdeDB);
+
+                // Vamos cargando la lista de odontologos
                 pacientes.add(pacienteDesdeDB);
+                logger.info("Paciente: "+pacienteDesdeDB);
             }
 
         }catch (Exception e){

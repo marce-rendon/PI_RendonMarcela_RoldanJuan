@@ -1,6 +1,5 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica;
 
-
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl.DaoH2Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Domicilio;
@@ -30,7 +29,7 @@ class PacienteServiceTest {
     @DisplayName("Testear que un paciente fue cargado correctamente con su domicilio")
     void caso1(){
         //Dado
-        Paciente paciente = new Paciente("Castro","Maria", "48974646", LocalDate.of(2024,7,15),
+        Paciente paciente = new Paciente("Ronaldo","Cristiano", "48974646", LocalDate.of(2024,7,15),
                 new Domicilio("Falsa",145,"CABA","Buenos Aires"));
         //cuando
         Paciente pacienteDesdeDb = pacienteService.guardarPaciente(paciente);
@@ -44,7 +43,7 @@ class PacienteServiceTest {
         //Dado
         Integer id = 1;
         //cuando
-        Paciente pacienteDesdeDb = pacienteService.buscarPorId(id);
+        Paciente pacienteDesdeDb = pacienteService.buscarPacientePorId(id);
         // entonces
         assertEquals(id, pacienteDesdeDb.getId());
     }
@@ -55,7 +54,7 @@ class PacienteServiceTest {
         //Dado
         List<Paciente> pacientes;
         // cuando
-        pacientes = pacienteService.buscarTodos();
+        pacientes = pacienteService.buscarTodosLosPacientes();
         // entonces
         assertFalse(pacientes.isEmpty());
     }

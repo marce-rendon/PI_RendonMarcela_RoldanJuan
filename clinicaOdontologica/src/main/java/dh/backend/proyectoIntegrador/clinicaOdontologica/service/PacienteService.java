@@ -5,7 +5,6 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class PacienteService {
     private IDao<Paciente> pacienteIDao;
@@ -18,10 +17,10 @@ public class PacienteService {
         return pacienteIDao.guardar(paciente);
     }
 
-    public Paciente buscarPorId(Integer id){
+    public Paciente buscarPacientePorId(Integer id){
         return pacienteIDao.buscarPorId(id);
     }
-    public List<Paciente> buscarTodos(){
+    public List<Paciente> buscarTodosLosPacientes(){
         return pacienteIDao.listaTodos();
     }
 }
