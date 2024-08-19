@@ -20,6 +20,7 @@ public class OdontologoService {
     public Odontologo buscarOdontologoPorId(Integer id){
         return odontologoIDao.buscarPorId(id);
     }
+
     public List<Odontologo> buscarTodosLosOdontologos(){
         return odontologoIDao.listaTodos();
     }
