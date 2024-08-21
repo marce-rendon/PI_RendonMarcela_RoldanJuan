@@ -1,5 +1,7 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.model;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
+
 import java.time.LocalDate;
 
 public class Paciente {
@@ -9,6 +11,9 @@ public class Paciente {
     private String dni;
     private LocalDate fechaIngreso;
     private Domicilio domicilio;
+
+    public Paciente() {
+    }
 
     public Paciente(String apellido, String nombre, String dni, LocalDate fechaIngreso, Domicilio domicilio) {
         this.apellido = apellido;
@@ -77,13 +82,6 @@ public class Paciente {
 
     @Override
     public String toString() {
-        return "Paciente{" +
-                "id=" + id +
-                ", apellido='" + apellido + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", dni='" + dni + '\'' +
-                ", fechaIngreso=" + fechaIngreso +
-                ", domicilio=" + domicilio +
-                '}';
+        return GsonProvider.getGson().toJson(this);
     }
 }

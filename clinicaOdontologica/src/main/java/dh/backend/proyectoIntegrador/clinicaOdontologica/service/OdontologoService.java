@@ -2,6 +2,7 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.service;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.IDao;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Odontologo;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,5 +24,13 @@ public class OdontologoService {
 
     public List<Odontologo> buscarTodosLosOdontologos(){
         return odontologoIDao.listaTodos();
+    }
+
+    public void modificarOdontologo(Odontologo odontologo){
+        odontologoIDao.modificar(odontologo);
+    }
+
+    public void eliminarOdontologo(Integer id){
+        odontologoIDao.eliminar(id);
     }
 }

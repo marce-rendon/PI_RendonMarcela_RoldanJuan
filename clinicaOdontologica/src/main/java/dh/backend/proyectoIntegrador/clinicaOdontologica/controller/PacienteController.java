@@ -2,34 +2,48 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.PacienteService;
+import org.springframework.web.bind.annotation.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-@Controller
+@RestController
+@RequestMapping("/paciente")
 public class PacienteController {
-
     private PacienteService pacienteService;
-
-    public static final Logger logger = LoggerFactory.getLogger(PacienteController.class);
 
     public PacienteController(PacienteService pacienteService) {
         this.pacienteService = pacienteService;
     }
 
-    @GetMapping("/index")
-    public String buscarPaciente(Model model, @RequestParam Integer id){
-        Paciente paciente = pacienteService.buscarPacientePorId(id);
-        logger.info("Paciente devuelto al controller proveniente del service: " + paciente);
+    //POST
+    @PostMapping("/guardar")
+    public Paciente guardarPaciente(@RequestBody Paciente paciente){
+        return pacienteService.guardarPaciente(paciente);
+    }
 
-        model.addAttribute("nombre", paciente.getNombre());
-        model.addAttribute("apellido", paciente.getApellido());
+    //PUT
+    @PutMapping("/modificar")
+    public String modificarPaciente(@RequestBody Paciente paciente){
+        pacienteService.modificarPaciente(paciente);
+        return "El paciente "+ paciente.getId() + " fue modificado";
+    }
 
-        return "vista/paciente";
+    //DELETE
+    @DeleteMapping("/eliminar/{id}")
+    public String eliminarPaciente(@PathVariable Integer id){
+        pacienteService.eliminarPaciente(id);
+        return "El paciente "+ id + " fue eliminado";
+    }
+
+    //GET
+    @GetMapping("/buscar/{id}")
+    public Paciente buscarPorId(@PathVariable Integer id){
+        return pacienteService.buscarPacientePorId(id);
+    }
+
+    //GET
+    @GetMapping("/buscartodos")
+    public List<Paciente> buscarTodos(){
+        return pacienteService.buscarTodosLosPacientes();
     }
 }
