@@ -21,6 +21,9 @@ public class DaoH2Paciente implements IDao<Paciente> {
     public static final String INSERT = "INSERT INTO PACIENTES VALUES(DEFAULT,?,?,?,?,? )";
     public static final String SELECT_ID = "SELECT * FROM PACIENTES WHERE ID = ?";
     public static final String SELECT_ALL = "SELECT * FROM PACIENTES";
+    public static final String UPDATE = "UPDATE PACIENTES SET APELLIDO=?, NOMBRE=?, DNI=?," +
+            "FECHA_INGRESO=?, ID_DOMICILIO=? WHERE ID=?";
+    public static final String DELETE = "DELETE FROM PACIENTES WHERE ID=?";
 
     // esta instanciacion de la clase daoH2Domicilio me va a permitir acceder a los metodos de domicilio
     private DaoH2Domicilio daoH2Domicilio = new DaoH2Domicilio();
@@ -29,11 +32,9 @@ public class DaoH2Paciente implements IDao<Paciente> {
         Connection connection = null;
         Paciente pacienteARetornar = null;
         Domicilio domicilioAuxiliar = daoH2Domicilio.guardar(paciente.getDomicilio());
-
         try{
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
-
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, paciente.getApellido());
             preparedStatement.setString(2, paciente.getNombre());
@@ -42,14 +43,13 @@ public class DaoH2Paciente implements IDao<Paciente> {
             preparedStatement.setInt(5, domicilioAuxiliar.getId());
             preparedStatement.executeUpdate();
             connection.commit();
-
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()){
                 Integer id = resultSet.getInt(1);
                 pacienteARetornar = new Paciente(id, paciente.getApellido(), paciente.getNombre(),
                         paciente.getDni(), paciente.getFechaIngreso(), domicilioAuxiliar);
             }
-            logger.info("Paciente guardado en la base de datos: " + pacienteARetornar);
+            logger.info("paciente "+ pacienteARetornar);
 
         }catch (Exception e){
             if(connection != null){
@@ -82,12 +82,10 @@ public class DaoH2Paciente implements IDao<Paciente> {
     public Paciente buscarPorId(Integer id) {
         Connection connection = null;
         Paciente pacienteEncontrado = null;
-
         try{
             connection = H2Connection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ID);
             preparedStatement.setInt(1, id);
-
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 Integer idDB = resultSet.getInt(1);
@@ -100,9 +98,9 @@ public class DaoH2Paciente implements IDao<Paciente> {
                 pacienteEncontrado = new Paciente(idDB, apellido, nombre, dni, fechaIngreso, domicilio);
             }
             if(pacienteEncontrado!= null){
-                logger.info("Paciente encontrado: "+ pacienteEncontrado);
+                logger.info("paciente encontrado "+ pacienteEncontrado);
             } else {
-                logger.info("El paciente no se encontró en la base de datos.");
+                logger.info("paciente no encontrado");
             }
 
         }catch (Exception e){
@@ -124,11 +122,9 @@ public class DaoH2Paciente implements IDao<Paciente> {
         Connection connection = null;
         List<Paciente> pacientes = new ArrayList<>();
         Paciente pacienteDesdeDB = null;
-
         try{
             connection = H2Connection.getConnection();
             Statement statement = connection.createStatement();
-
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()){
                 Integer idDB = resultSet.getInt(1);
@@ -139,10 +135,8 @@ public class DaoH2Paciente implements IDao<Paciente> {
                 Integer id_domicilio = resultSet.getInt(6);
                 Domicilio domicilio = daoH2Domicilio.buscarPorId(id_domicilio);
                 pacienteDesdeDB = new Paciente(idDB, apellido, nombre, dni, fechaIngreso, domicilio);
-
-                // Vamos cargando la lista de odontologos
+                logger.info("paciente"+pacienteDesdeDB);
                 pacientes.add(pacienteDesdeDB);
-                logger.info("Paciente: "+pacienteDesdeDB);
             }
 
         }catch (Exception e){
@@ -157,5 +151,93 @@ public class DaoH2Paciente implements IDao<Paciente> {
             }
         }
         return pacientes;
+    }
+
+    @Override
+    public void modificar(Paciente paciente) {
+        Connection connection = null;
+        try{
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, paciente.getApellido());
+            preparedStatement.setString(2, paciente.getNombre());
+            preparedStatement.setString(3, paciente.getDni());
+            preparedStatement.setDate(4, Date.valueOf(paciente.getFechaIngreso()));
+            preparedStatement.setInt(5, paciente.getDomicilio().getId());
+            preparedStatement.setInt(6, paciente.getId());
+            daoH2Domicilio.modificar(paciente.getDomicilio());
+            int registrosModificados = preparedStatement.executeUpdate();
+            connection.commit();
+            logger.info("Paciente modificado: " + paciente);
+            logger.info("Registros modificados: " + registrosModificados);
+
+        }catch (Exception e){
+            if(connection != null){
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    logger.error(e.getMessage());
+                } finally {
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void eliminar(Integer id) {
+        Connection connection = null;
+        Paciente paciente = null;
+        try{
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+            //buscamos al paciente para poder obtener el domicilio y eliminarlo
+            paciente = buscarPorId(id);
+            daoH2Domicilio.eliminar(paciente.getDomicilio().getId());
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setInt(1, id);
+            int registrosEliminados = preparedStatement.executeUpdate();
+            connection.commit();
+            logger.info("Paciente eliminado: "+ id);
+            logger.info("Registros eliminados: "+ registrosEliminados);
+
+        }catch (Exception e){
+            if(connection != null){
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    logger.error(e.getMessage());
+                } finally {
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }
