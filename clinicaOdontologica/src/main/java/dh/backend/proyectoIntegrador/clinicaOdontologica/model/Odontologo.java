@@ -1,10 +1,15 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.model;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
+
 public class Odontologo {
     private Integer id;
     private String nroMatricula;
     private String nombre;
     private String apellido;
+
+    public Odontologo() {
+    }
 
     public Odontologo(Integer id, String nroMatricula, String nombre, String apellido) {
         this.id = id;
@@ -53,11 +58,6 @@ public class Odontologo {
 
     @Override
     public String toString() {
-        return "Odontologo{" +
-                "id=" + id +
-                ", nroMatricula='" + nroMatricula + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                '}';
+        return GsonProvider.getGson().toJson(this);
     }
 }

@@ -2,37 +2,49 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Odontologo;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.OdontologoService;
+import org.springframework.web.bind.annotation.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-@Controller
+@RestController
 @RequestMapping("/odontologo")
 public class OdontologoController {
 
     private OdontologoService odontologoService;
 
-    public static final Logger logger = LoggerFactory.getLogger(OdontologoController.class);
-
     public OdontologoController(OdontologoService odontologoService) {
         this.odontologoService = odontologoService;
     }
 
-    @GetMapping("/{id}")
-    public String buscarOdontologo(Model model, @PathVariable("id") Integer identificador){
-        Odontologo odontologo = odontologoService.buscarOdontologoPorId(identificador);
-        logger.info("El odontologo devuelto al controller proveniente del service: " + odontologo);
+    //POST
+    @PostMapping("/guardar")
+    public Odontologo guardarOdontologo(@RequestBody Odontologo odontologo){
+        return odontologoService.guardarOdontologo(odontologo);
+    }
 
-        model.addAttribute("nombre", odontologo.getNombre());
-        model.addAttribute("apellido", odontologo.getApellido());
-        model.addAttribute("matricula", odontologo.getNroMatricula());
+    //PUT
+    @PutMapping("/modificar")
+    public String modificarOdontologo(@RequestBody Odontologo odontologo){
+        odontologoService.modificarOdontologo(odontologo);
+        return "El odontologo "+ odontologo.getId() + " fue modificado";
+    }
 
-        return "vista/odontologo";
+    //DELETE
+    @DeleteMapping("/eliminar/{id}")
+    public String eliminarOdontologo(@PathVariable Integer id){
+        odontologoService.eliminarOdontologo(id);
+        return "El odontologo "+ id + " fue eliminado";
+    }
+
+    //GET
+    @GetMapping("/buscar/{id}")
+    public Odontologo buscarPorId(@PathVariable Integer id){
+        return odontologoService.buscarOdontologoPorId(id);
+    }
+
+    //GET
+    @GetMapping("/buscartodos")
+    public List<Odontologo> buscarTodos(){
+        return odontologoService.buscarTodosLosOdontologos();
     }
 }

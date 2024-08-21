@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class VistaController {
+public class VistaControllerPaciente {
 
     private PacienteService pacienteService;
 
-    public static final Logger logger = LoggerFactory.getLogger(VistaController.class);
+    public static final Logger logger = LoggerFactory.getLogger(VistaControllerPaciente.class);
 
-    public VistaController(PacienteService pacienteService) {
+    public VistaControllerPaciente(PacienteService pacienteService) {
         this.pacienteService = pacienteService;
     }
 
