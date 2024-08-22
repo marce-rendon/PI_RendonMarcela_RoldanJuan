@@ -22,3 +22,7 @@ SELECT * FROM PACIENTES WHERE ID = ? [42104-224]
 2024-08-16 20:17:23.340145-06:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PACIENTES" not found (this database is empty); SQL statement:
 SELECT * FROM PACIENTES WHERE ID = ? [42104-224]
+2024-08-21 23:05:39.002019-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "DNI CHARACTER VARYING(10)": "'545464564654545' (15)"
+Value too long for column "DNI CHARACTER VARYING(10)": "'545464564654545' (15)"; SQL statement:
+UPDATE PACIENTES SET APELLIDO=?, NOMBRE=?, DNI=?,FECHA_INGRESO=?, ID_DOMICILIO=? WHERE ID=? [22001-224]
