@@ -26,7 +26,7 @@ public class OdontologoController {
     @PutMapping("/modificar")
     public String modificarOdontologo(@RequestBody Odontologo odontologo){
         odontologoService.modificarOdontologo(odontologo);
-        return "El odontologo "+ odontologo.getId() + " fue modificado";
+        return "El odontologo "+ odontologo.getId() + " fue modificado.";
     }
 
     //DELETE
