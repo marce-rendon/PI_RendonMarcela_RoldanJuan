@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.DS_Store
+clinica.mv.db
 
 ### NetBeans ###
 /nbproject/private/
