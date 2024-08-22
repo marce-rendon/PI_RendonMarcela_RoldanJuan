@@ -33,7 +33,7 @@ public class OdontologoController {
     @DeleteMapping("/eliminar/{id}")
     public String eliminarOdontologo(@PathVariable Integer id){
         odontologoService.eliminarOdontologo(id);
-        return "El odontologo "+ id + " fue eliminado";
+        return "El odontologo "+ id + " fue eliminado.";
     }
 
     //GET
