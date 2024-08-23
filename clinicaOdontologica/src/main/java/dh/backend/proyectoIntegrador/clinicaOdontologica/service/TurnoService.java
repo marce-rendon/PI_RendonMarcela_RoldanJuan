@@ -31,6 +31,7 @@ public class TurnoService {
         }
         return turnoARetornar;
     }
+
     public Turno buscarTurnoPorId(Integer id){
         return turnoIDao.buscarPorId(id);
     }
@@ -39,11 +40,11 @@ public class TurnoService {
         return turnoIDao.listaTodos();
     }
 
-    void modificarTurno(Turno turno){
+    public void modificarTurno(Turno turno){
         turnoIDao.modificar(turno);
     }
 
-    void eliminarTurno(Integer id){
+    public void eliminarTurno(Integer id){
         turnoIDao.eliminar(id);
     }
 

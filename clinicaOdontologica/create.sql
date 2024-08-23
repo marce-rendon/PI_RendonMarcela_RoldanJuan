@@ -30,14 +30,13 @@ nombre VARCHAR(50) NOT NULL,
 apellido VARCHAR(50) NOT NULL
 );
 
-//# Inserta registros en DOMICILIOS y PACIENTES
-INSERT INTO DOMICILIOS VALUES (DEFAULT,'Calle SIEMPRE VIVA', 12345, 'SAN Miguel', 'JUJUY');
-INSERT INTO PACIENTES VALUES (DEFAULT, 'Maradona', 'Diego Armando', '1234567890', '2024-08-15',1);
-INSERT INTO DOMICILIOS VALUES (DEFAULT,'Calle Fake', 12345, 'SAN Miguel', 'JUJUY');
-INSERT INTO PACIENTES VALUES (DEFAULT, 'Menotti', 'Luis', '1234567890', '2024-08-15',1);
-
 //# Inserta registros en ODONTOLOGOS
-INSERT INTO ODONTOLOGOS VALUES (DEFAULT, '12345', 'Marcela', 'Rendón');
-INSERT INTO ODONTOLOGOS VALUES (DEFAULT, '2456', 'Juan', 'Roldán');
-INSERT INTO ODONTOLOGOS VALUES (DEFAULT, '12345', 'July', 'Sánchez');
-INSERT INTO ODONTOLOGOS VALUES (DEFAULT, '2456', 'Pepé', 'García');
+insert into Odontologos values(DEFAULT,12345,'juan','perez');
+insert into Odontologos values(DEFAULT,12346,'ana','ronda');
+insert into Odontologos values(DEFAULT,12347,'miguel','rojo');
+insert into Odontologos values(DEFAULT,12348,'laura','pomelo');
+insert into Odontologos values(DEFAULT,12349,'tulio','rodriguez');
+
+//# Inserta registros en DOMICILIOS y PACIENTES
+INSERT INTO DOMICILIOS VALUES (DEFAULT,'SIEMPRE VIVA', 123, 'SAN SALVADOR', 'JUJUY');
+INSERT INTO PACIENTES VALUES (DEFAULT, 'PEREZ', 'JUAN', '4654666', '2024-07-15',1);

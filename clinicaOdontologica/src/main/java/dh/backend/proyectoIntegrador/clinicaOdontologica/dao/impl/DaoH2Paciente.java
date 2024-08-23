@@ -210,10 +210,9 @@ public class DaoH2Paciente implements IDao<Paciente> {
             daoH2Domicilio.eliminar(paciente.getDomicilio().getId());
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, id);
-            int registrosEliminados = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
             connection.commit();
-            logger.info("Paciente eliminado: "+ id);
-            logger.info("Registros eliminados: "+ registrosEliminados);
+            logger.info("paciente eliminado "+ id);
 
         }catch (Exception e){
             if(connection != null){
