@@ -20,6 +20,14 @@ public class TurnoService {
         this.odontologoService = odontologoService;
     }
 
+    public List<Turno> buscarTodosLosTurnos(){
+        return turnoIDao.listaTodos();
+    }
+
+    public Turno buscarTurnoPorId(Integer id){
+        return turnoIDao.buscarPorId(id);
+    }
+
     public Turno guardarTurno(Turno turno){
         Paciente paciente = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
         Odontologo odontologo = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
@@ -30,14 +38,6 @@ public class TurnoService {
             turnoARetornar = turnoIDao.guardar(turno);
         }
         return turnoARetornar;
-    }
-
-    public Turno buscarTurnoPorId(Integer id){
-        return turnoIDao.buscarPorId(id);
-    }
-
-    public List<Turno> buscarTodosLosTurnos(){
-        return turnoIDao.listaTodos();
     }
 
     public void modificarTurno(Turno turno){

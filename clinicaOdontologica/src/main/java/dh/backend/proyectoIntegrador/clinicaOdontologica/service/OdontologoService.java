@@ -14,16 +14,16 @@ public class OdontologoService {
         this.odontologoIDao = odontologoIDao;
     }
 
-    public Odontologo guardarOdontologo(Odontologo odontologo){
-        return odontologoIDao.guardar(odontologo);
+    public List<Odontologo> buscarTodosLosOdontologos(){
+        return odontologoIDao.listaTodos();
     }
 
     public Odontologo buscarOdontologoPorId(Integer id){
         return odontologoIDao.buscarPorId(id);
     }
 
-    public List<Odontologo> buscarTodosLosOdontologos(){
-        return odontologoIDao.listaTodos();
+    public Odontologo guardarOdontologo(Odontologo odontologo){
+        return odontologoIDao.guardar(odontologo);
     }
 
     public void modificarOdontologo(Odontologo odontologo){
@@ -33,4 +33,5 @@ public class OdontologoService {
     public void eliminarOdontologo(Integer id){
         odontologoIDao.eliminar(id);
     }
+
 }

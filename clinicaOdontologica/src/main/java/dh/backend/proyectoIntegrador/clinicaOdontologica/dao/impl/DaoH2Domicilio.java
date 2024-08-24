@@ -16,6 +16,45 @@ public class DaoH2Domicilio implements IDao<Domicilio> {
     public static final String UPDATE = "UPDATE DOMICILIOS SET CALLE=?, NUMERO=?, LOCALIDAD=?," +
             "PROVINCIA=? WHERE ID=?";
     public static final String DELETE = "DELETE FROM DOMICILIOS WHERE ID =?";
+
+    @Override
+    public List<Domicilio> listaTodos() {
+        return null;
+    }
+
+    @Override
+    public Domicilio buscarPorId(Integer id) {
+        Connection connection = null;
+        Domicilio domicilioEncontrado = null;
+        try{
+            connection = H2Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Integer idDB = resultSet.getInt(1);
+                String calle = resultSet.getString(2);
+                int numero = resultSet.getInt(3);
+                String localidad = resultSet.getString(4);
+                String provincia = resultSet.getString(5);
+                domicilioEncontrado = new Domicilio(idDB, calle, numero, localidad, provincia);
+            }
+            logger.info("domicilio encontrado " + domicilioEncontrado);
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return domicilioEncontrado;
+    }
+
     @Override
     public Domicilio guardar(Domicilio domicilio) {
         Connection connection = null;
@@ -64,44 +103,6 @@ public class DaoH2Domicilio implements IDao<Domicilio> {
             }
         }
         return domicilioARetornar;
-    }
-
-    @Override
-    public Domicilio buscarPorId(Integer id) {
-        Connection connection = null;
-        Domicilio domicilioEncontrado = null;
-        try{
-            connection = H2Connection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                Integer idDB = resultSet.getInt(1);
-                String calle = resultSet.getString(2);
-                int numero = resultSet.getInt(3);
-                String localidad = resultSet.getString(4);
-                String provincia = resultSet.getString(5);
-                domicilioEncontrado = new Domicilio(idDB, calle, numero, localidad, provincia);
-            }
-            logger.info("domicilio encontrado " + domicilioEncontrado);
-
-        }catch (Exception e){
-            logger.error(e.getMessage());
-            e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                logger.error(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        return domicilioEncontrado;
-    }
-
-    @Override
-    public List<Domicilio> listaTodos() {
-        return null;
     }
 
     @Override
@@ -183,4 +184,5 @@ public class DaoH2Domicilio implements IDao<Domicilio> {
             }
         }
     }
+
 }

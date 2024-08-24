@@ -13,16 +13,16 @@ public class PacienteService {
         this.pacienteIDao = pacienteIDao;
     }
 
-    public Paciente guardarPaciente(Paciente paciente){
-        return pacienteIDao.guardar(paciente);
+    public List<Paciente> buscarTodosLosPacientes(){
+        return pacienteIDao.listaTodos();
     }
 
     public Paciente buscarPacientePorId(Integer id){
         return pacienteIDao.buscarPorId(id);
     }
 
-    public List<Paciente> buscarTodosLosPacientes(){
-        return pacienteIDao.listaTodos();
+    public Paciente guardarPaciente(Paciente paciente){
+        return pacienteIDao.guardar(paciente);
     }
 
     public void modificarPaciente(Paciente paciente){
@@ -32,4 +32,5 @@ public class PacienteService {
     public void eliminarPaciente(Integer id){
         pacienteIDao.eliminar(id);
     }
+
 }

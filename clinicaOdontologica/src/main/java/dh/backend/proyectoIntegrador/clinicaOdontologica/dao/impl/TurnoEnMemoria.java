@@ -13,12 +13,10 @@ import java.util.List;
 public class TurnoEnMemoria implements IDao<Turno> {
     private static Logger logger = LoggerFactory.getLogger(TurnoEnMemoria.class);
     private List<Turno> turnos = new ArrayList<>();
+
     @Override
-    public Turno guardar(Turno turno) {
-        turno.setId(turnos.size()+1);
-        turnos.add(turno);
-        logger.info("El turno fue agregado: "+ turno);
-        return turno;
+    public List<Turno> listaTodos() {
+        return turnos;
     }
 
     @Override
@@ -34,8 +32,11 @@ public class TurnoEnMemoria implements IDao<Turno> {
     }
 
     @Override
-    public List<Turno> listaTodos() {
-        return turnos;
+    public Turno guardar(Turno turno) {
+        turno.setId(turnos.size()+1);
+        turnos.add(turno);
+        logger.info("El turno fue agregado: "+ turno);
+        return turno;
     }
 
     @Override
