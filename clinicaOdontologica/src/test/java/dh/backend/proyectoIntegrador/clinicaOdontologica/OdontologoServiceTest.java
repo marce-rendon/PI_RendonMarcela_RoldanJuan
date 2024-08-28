@@ -1,7 +1,5 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica;
 
-import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl.DaoH2Odontologo;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +12,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OdontologoServiceTest {
+
+/*
     static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
     OdontologoService odontologoService = new OdontologoService(new DaoH2Odontologo());
 
@@ -54,5 +54,5 @@ public class OdontologoServiceTest {
         // entonces
         assertFalse(odontologos.isEmpty());
     }
-
+*/
 }

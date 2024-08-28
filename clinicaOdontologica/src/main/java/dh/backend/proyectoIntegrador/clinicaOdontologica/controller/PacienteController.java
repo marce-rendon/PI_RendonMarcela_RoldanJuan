@@ -5,7 +5,6 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteServic
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +20,13 @@ public class PacienteController {
 
     //GET
     @GetMapping("/buscartodos")
-    public ResponseEntity<List<Paciente>>  buscarTodos(){
+    public ResponseEntity<List<Paciente>> buscarTodosLosPacientes(){
         return ResponseEntity.ok(pacienteService.buscarTodosLosPacientes());
     }
 
     //GET
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<Paciente>  buscarPorId(@PathVariable Integer id){
+    public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Integer id){
         Optional<Paciente>  pacienteEncontrado = pacienteService.buscarPacientePorId(id);
         if(pacienteEncontrado.isPresent()) {
             return ResponseEntity.ok(pacienteEncontrado.get());
@@ -39,12 +38,13 @@ public class PacienteController {
     //POST
     @PostMapping("/guardar")
     public ResponseEntity<Paciente> guardarPaciente(@RequestBody Paciente paciente){
+        // Jackson convierte el objeto JSON a un objeto Java "Paciente"
         return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
     }
 
     //PUT
     @PutMapping("/modificar")
-    public ResponseEntity<String>  modificarPaciente(@RequestBody Paciente paciente){
+    public ResponseEntity<String> modificarPaciente(@RequestBody Paciente paciente){
         Optional<Paciente> pacienteEncontrado = pacienteService.buscarPacientePorId(paciente.getId());
         if(pacienteEncontrado.isPresent()){
             pacienteService.modificarPaciente(paciente);

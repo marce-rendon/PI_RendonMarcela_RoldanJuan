@@ -4,7 +4,6 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.repository.IPacienteRepository;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
