@@ -1,17 +1,46 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Odontologo;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Paciente;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.service.OdontologoService;
-import org.springframework.http.HttpStatus;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IOdontologoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/odontologo")
 public class OdontologoController {
+    private IOdontologoService odontologoService;
+
+    public OdontologoController(IOdontologoService odontologoService) {
+        this.odontologoService = odontologoService;
+    }
+
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<Odontologo> buscarPorId(@PathVariable Integer id){
+        Optional<Odontologo> odontologo = odontologoService.buscarOdontologoPorId(id);
+        if(odontologo.isPresent()){
+            return ResponseEntity.ok(odontologo.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/guardar")
+    public ResponseEntity<Odontologo> agregarOdontologo(@RequestBody Odontologo odontologo){
+        // Jackson convierte el objeto JSON a un objeto Java "Odontologo"
+        return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
+    }
+
+
+}
+
+
+
+
+
+
+/*
+
 
     // Service
     private OdontologoService odontologoService;
@@ -70,4 +99,5 @@ public class OdontologoController {
         }
     }
 
-}
+
+*/

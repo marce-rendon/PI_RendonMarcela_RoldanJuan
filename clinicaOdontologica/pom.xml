@@ -5,31 +5,38 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>dh.backend.proyectoIntegrador.clinicaOdontologica</groupId>
+
+    <groupId>dh.backend.proyectoIntegrador.clinicaOdontologica</groupId>
 	<artifactId>clinicaOdontologica</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>clinicaOdontologica</name>
 	<description>Proyecto Integrador Marcela Rendón - Juan Roldán, Backend 1</description>
-	<url/>
-	<licenses>
+
+    <url/>
+
+    <licenses>
 		<license/>
 	</licenses>
-	<developers>
+
+    <developers>
 		<developer/>
 	</developers>
-	<scm>
+
+    <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
+
+    <properties>
 		<java.version>21</java.version>
 	</properties>
-	<dependencies>
+
+    <dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -65,6 +72,12 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.10.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 	</dependencies>

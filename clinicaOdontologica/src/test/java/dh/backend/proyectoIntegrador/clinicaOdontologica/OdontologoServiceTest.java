@@ -2,8 +2,7 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dao.impl.DaoH2Odontologo;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.db.H2Connection;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Odontologo;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.service.OdontologoService;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,7 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Odontologo;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.model.Turno;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.service.TurnoService;
-import org.springframework.http.HttpStatus;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Turno;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.service.ITurnoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +11,31 @@ import java.util.List;
 @RequestMapping("/turnos")
 public class TurnoController {
 
+    private ITurnoService turnoService;
+
+    public TurnoController(ITurnoService turnoService) {
+        this.turnoService = turnoService;
+    }
+
+    //GET
+    @GetMapping("/buscartodos")
+    public ResponseEntity<List<Turno>> buscarTodos(){
+        return ResponseEntity.ok(turnoService.buscarTodosLosTurnos());
+    }
+
+    //POST
+    @PostMapping("/guardar")
+    public ResponseEntity<Turno> guardarTurno(@RequestBody Turno turno){
+        return ResponseEntity.ok(turnoService.guardarTurno(turno));
+    }
+
+}
+
+
+
+
+
+/*
     // Service
     private TurnoService turnoService;
 
@@ -69,4 +92,4 @@ public class TurnoController {
             return ResponseEntity.notFound().build();
         }
     }
-}
+*/
