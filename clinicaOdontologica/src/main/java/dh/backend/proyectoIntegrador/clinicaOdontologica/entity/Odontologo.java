@@ -1,6 +1,6 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,8 +25,8 @@ public class Odontologo {
     private String nombre;
 
     @OneToMany(mappedBy = "odontologo", cascade = CascadeType.REMOVE)
-    //@JsonManagedReference(value = "odontologo-turno")
-    @JsonIgnore
+    @JsonManagedReference(value = "odontologo-turno")
+    //@JsonIgnore
     private Set<Turno> turnoSet;
 
     @Override

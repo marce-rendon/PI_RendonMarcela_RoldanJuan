@@ -1,12 +1,12 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Getter
@@ -16,17 +16,19 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "turnos")
 public class Turno {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    //@JsonBackReference(value = "paciente-turno")
+    @JsonBackReference(value = "paciente-turno")
     private Paciente paciente;
 
     @ManyToOne
-    //@JsonBackReference(value = "odontologo-turno")
+    @JsonBackReference(value = "odontologo-turno")
     private Odontologo odontologo;
+
     private LocalDate fecha;
 
     @Override
