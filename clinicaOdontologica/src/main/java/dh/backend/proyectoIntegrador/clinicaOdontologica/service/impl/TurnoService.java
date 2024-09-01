@@ -13,6 +13,8 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IOdontologoServ
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.ITurnoService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import java.util.Optional;
 @Service
 public class TurnoService implements ITurnoService {
 
+    static final Logger logger = LoggerFactory.getLogger(TurnoService.class);
     @Autowired
     private ITurnoRepository turnoRepository;
 
@@ -52,18 +55,27 @@ public class TurnoService implements ITurnoService {
         List<TurnoResponseDto> turnosRespuesta = new ArrayList<>();
 
         for(Turno t: turnosDesdeBD){
+            logger.info("buscarTodosLosTurnos -> Turno " + t.getId() + " encontrado.");
+
             // Se arma el turnoResponseDto desde el turno obtenido de la base de datos
             // De forma manual
             //turnosRespuesta.add(obtenerTurnoResponse(t));
             // De forma automática con modelmapper
             turnosRespuesta.add(convertirTurnoEnResponse(t));
+
+            //System.out.println(t.toString());
+            //System.out.println(t);
         }
         return turnosRespuesta;
     }
 
     @Override
-    public Optional<Turno> buscarTurnoPorId(Integer id) {
-        return turnoRepository.findById(id);
+    public Optional<TurnoResponseDto> buscarTurnoPorId(Integer id) {
+        Optional<Turno> turno = turnoRepository.findById(id);
+        logger.info("buscarTurnoPorId -> Turno " + turno.get().getId() + " encontrado.");
+
+        TurnoResponseDto turnoRespuesta = convertirTurnoEnResponse(turno.get());
+        return Optional.of(turnoRespuesta);
     }
 
     @Override
@@ -84,6 +96,7 @@ public class TurnoService implements ITurnoService {
 
             // Se obtiene el turno persistido en la base de datos con el id generado automaticamente
             turnoDesdeBD = turnoRepository.save(turno);
+            logger.info("guardarTurno -> El turnoDesdeBD " + turnoDesdeBD.getId() + " se guardó correctamente en la base de datos.");
 
             // Se arma el turnoResponseDto desde el turno obtenido de la base de datos
             // De forma manual
@@ -106,6 +119,7 @@ public class TurnoService implements ITurnoService {
                     paciente.get(), odontologo.get(), LocalDate.parse(turnoModifyDto.getFecha())
             );
             turnoRepository.save(turno);
+            logger.info("modificarTurno -> El turno " + turno.getId() + " se modificó correctamente.");
         }
     }
 
@@ -117,6 +131,7 @@ public class TurnoService implements ITurnoService {
     @Override
     public void eliminarTurno(Integer id){
         turnoRepository.deleteById(id);
+        logger.info("eliminarTurno -> El turno " + id + " se eliminó de la base de datos.");
     }
 
     // Se arma el turnoResponseDto desde el turno obtenido de la base de datos
@@ -135,6 +150,8 @@ public class TurnoService implements ITurnoService {
                 pacienteResponseDto, odontologoResponseDto,
                 turnoDesdeBD.getFecha().toString()
         );
+
+        logger.info("El turnoResponseDto " + turnoResponseDto.getId() + " se armó desde el turno obtenido de la base de datos de forma manual.");
         return turnoResponseDto;
     }
 
@@ -144,6 +161,8 @@ public class TurnoService implements ITurnoService {
         TurnoResponseDto turnoResponseDto = modelMapper.map(turno, TurnoResponseDto.class);
         turnoResponseDto.setPacienteResponseDto(modelMapper.map(turno.getPaciente(), PacienteResponseDto.class));
         turnoResponseDto.setOdontologoResponseDto(modelMapper.map(turno.getOdontologo(), OdontologoResponseDto.class));
+
+        logger.info("convertirTurnoEnResponse -> El turnoResponseDto " + turnoResponseDto.getId() + " se armó desde el turno obtenido de la base de datos forma automática con modelmapper.");
         return turnoResponseDto;
     }
 }

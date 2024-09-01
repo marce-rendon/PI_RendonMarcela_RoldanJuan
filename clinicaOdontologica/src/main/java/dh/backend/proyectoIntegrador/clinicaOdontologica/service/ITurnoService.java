@@ -11,7 +11,7 @@ public interface ITurnoService {
 
     List<TurnoResponseDto> buscarTodosLosTurnos();
 
-    Optional<Turno> buscarTurnoPorId(Integer id);
+    Optional<TurnoResponseDto> buscarTurnoPorId(Integer id);
 
     TurnoResponseDto guardarTurno(TurnoRequestDto turnoRequestDto);
 
