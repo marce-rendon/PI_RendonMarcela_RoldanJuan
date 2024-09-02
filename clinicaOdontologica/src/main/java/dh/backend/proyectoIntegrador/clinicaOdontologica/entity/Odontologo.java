@@ -3,13 +3,11 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
