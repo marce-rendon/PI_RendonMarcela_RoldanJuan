@@ -1,5 +1,6 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.PacienteResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class PacienteController {
 
     //GET
     @GetMapping("/buscartodos")
-    public ResponseEntity<List<Paciente>> buscarTodosLosPacientes(){
+    public ResponseEntity<List<PacienteResponseDto>> buscarTodosLosPacientes(){
         return ResponseEntity.ok(pacienteService.buscarTodosLosPacientes());
     }
 

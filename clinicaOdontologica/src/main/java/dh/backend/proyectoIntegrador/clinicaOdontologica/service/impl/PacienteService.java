@@ -1,19 +1,28 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.service.impl;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.PacienteResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.repository.IPacienteRepository;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PacienteService implements IPacienteService {
 
+    static final Logger logger = LoggerFactory.getLogger(PacienteService.class);
     @Autowired
     private IPacienteRepository pacienteRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
     // Cuando se usa @Autowired, ya no se requiere el constructo para inyectar la dependencia IPacienteRepository
     /*
     public PacienteService(IPacienteRepository pacienteRepository) {
@@ -22,8 +31,15 @@ public class PacienteService implements IPacienteService {
     */
 
     @Override
-    public List<Paciente> buscarTodosLosPacientes() {
-        return pacienteRepository.findAll();
+    public List<PacienteResponseDto> buscarTodosLosPacientes() {
+        List<Paciente> pacientesDesdeBD = pacienteRepository.findAll();
+        List<PacienteResponseDto> pacienteRespuesta = new ArrayList<>();
+
+        for(Paciente t: pacientesDesdeBD){
+            logger.info("buscarTodosLosPacientes -> Paciente " + t.getId() + " encontrado.");
+            pacienteRespuesta.add(convertirPacienteEnResponse(t));
+        }
+        return pacienteRespuesta;
     }
 
     @Override
@@ -55,5 +71,9 @@ public class PacienteService implements IPacienteService {
     public List<Paciente> buscarPorUnaParteApellido(String parte){
         return pacienteRepository.buscarPorParteApellido(parte);
     }
-
+    private PacienteResponseDto convertirPacienteEnResponse(Paciente paciente){
+        PacienteResponseDto pacienteResponseDto = modelMapper.map(paciente, PacienteResponseDto.class);
+        logger.info("convertirPacienteEnResponse -> El pacienteResponseDto " + pacienteResponseDto.getId() + " se armó desde el paciente obtenido de la base de datos de forma automática con modelmapper.");
+        return pacienteResponseDto;
+    }
 }

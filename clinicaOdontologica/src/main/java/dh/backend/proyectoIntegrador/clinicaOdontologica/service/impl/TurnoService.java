@@ -8,6 +8,7 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.TurnoRespo
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Turno;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.exception.ResourceNotFoundException;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.repository.ITurnoRepository;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IOdontologoService;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
@@ -71,22 +72,23 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public Optional<TurnoResponseDto> buscarTurnoPorId(Integer id) {
-        Optional<Turno> turno = turnoRepository.findById(id);
-        logger.info("buscarTurnoPorId -> Turno " + turno.get().getId() + " encontrado.");
-
-        TurnoResponseDto turnoRespuesta = convertirTurnoEnResponse(turno.get());
-        return Optional.of(turnoRespuesta);
+        Optional<Turno> turnoEncontrado = turnoRepository.findById(id);
+        if(turnoEncontrado.isPresent()){
+            logger.info("buscarTurnoPorId -> Turno " + turnoEncontrado.get().getId() + " encontrado.");
+            TurnoResponseDto turnoRespuesta = convertirTurnoEnResponse(turnoEncontrado.get());
+            return Optional.of(turnoRespuesta);
+        } else {
+            throw new ResourceNotFoundException("Turno no encontrado");
+        }
     }
 
     @Override
     public TurnoResponseDto guardarTurno(TurnoRequestDto turnoRequestDto){
         Optional<Paciente> paciente = pacienteService.buscarPacientePorId(turnoRequestDto.getPaciente_id());
         Optional<Odontologo> odontologo = odontologoService.buscarOdontologoPorId(turnoRequestDto.getOdontologo_id());
-
         Turno turno = new Turno();
         Turno turnoDesdeBD = null;
         TurnoResponseDto turnoResponseDto = null;
-
         if(paciente.isPresent() && odontologo.isPresent()){
             // Se arma el turno a persistir en la base de datos obteniendo la información
             // desde el turnoRequestDto
@@ -112,7 +114,6 @@ public class TurnoService implements ITurnoService {
     public void modificarTurno(TurnoModifyDto turnoModifyDto) {
         Optional<Paciente> paciente = pacienteService.buscarPacientePorId(turnoModifyDto.getPaciente_id());
         Optional<Odontologo> odontologo = odontologoService.buscarOdontologoPorId(turnoModifyDto.getOdontologo_id());
-
         if(paciente.isPresent() && odontologo.isPresent()){
             Turno turno = new Turno(
                     turnoModifyDto.getId(),
@@ -124,12 +125,18 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public Optional<Turno> buscarTurnosPorPaciente(String pacienteApellido) {
-        return turnoRepository.buscarPorApellidoPaciente(pacienteApellido);
+    public Optional<TurnoResponseDto> buscarTurnosPorPaciente(String pacienteApellido) {
+        Optional<Turno> turno = turnoRepository.buscarPorApellidoPaciente(pacienteApellido);
+        TurnoResponseDto turnoParaResponder = null;
+        if(turno.isPresent()) {
+            turnoParaResponder = convertirTurnoEnResponse(turno.get());
+        }
+        return Optional.ofNullable(turnoParaResponder);
     }
 
     @Override
     public void eliminarTurno(Integer id){
+        Optional<TurnoResponseDto> turnoEncontrado = buscarTurnoPorId(id);
         turnoRepository.deleteById(id);
         logger.info("eliminarTurno -> El turno " + id + " se eliminó de la base de datos.");
     }
@@ -150,7 +157,6 @@ public class TurnoService implements ITurnoService {
                 pacienteResponseDto, odontologoResponseDto,
                 turnoDesdeBD.getFecha().toString()
         );
-
         logger.info("El turnoResponseDto " + turnoResponseDto.getId() + " se armó desde el turno obtenido de la base de datos de forma manual.");
         return turnoResponseDto;
     }
