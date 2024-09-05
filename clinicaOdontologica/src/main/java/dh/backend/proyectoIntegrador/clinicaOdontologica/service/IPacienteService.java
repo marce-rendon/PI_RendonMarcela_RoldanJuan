@@ -9,7 +9,7 @@ public interface IPacienteService {
 
     List<PacienteResponseDto> buscarTodosLosPacientes();
 
-    Optional<Paciente> buscarPacientePorId(Integer id);
+    Optional<PacienteResponseDto> buscarPacientePorId(Integer id);
 
     Paciente guardarPaciente(Paciente paciente);
 

@@ -9,12 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TurnoResponseDto {
+public class DomicilioResponseDto {
     private Integer id;
-    // Datos del paciente
-    private TurnoPacienteResponseDto turnoPacienteResponseDto;
-    // Datos del odontólogo
-    private OdontologoResponseDto odontologoResponseDto;
-    private String fecha;
-
+    private String calle;
+    private int numero;
+    private String localidad;
+    private String provincia;
 }

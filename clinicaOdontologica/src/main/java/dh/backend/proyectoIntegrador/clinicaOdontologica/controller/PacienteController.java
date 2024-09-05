@@ -32,8 +32,8 @@ public class PacienteController {
 
     //GET
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Integer id){
-        Optional<Paciente>  pacienteEncontrado = pacienteService.buscarPacientePorId(id);
+    public ResponseEntity<PacienteResponseDto> buscarPacientePorId(@PathVariable Integer id){
+        Optional<PacienteResponseDto>  pacienteEncontrado = pacienteService.buscarPacientePorId(id);
         if(pacienteEncontrado.isPresent()) {
             return ResponseEntity.ok(pacienteEncontrado.get());
         } else {
@@ -51,7 +51,7 @@ public class PacienteController {
     //PUT
     @PutMapping("/modificar")
     public ResponseEntity<String> modificarPaciente(@RequestBody Paciente paciente){
-        Optional<Paciente> pacienteEncontrado = pacienteService.buscarPacientePorId(paciente.getId());
+        Optional<PacienteResponseDto> pacienteEncontrado = pacienteService.buscarPacientePorId(paciente.getId());
         if(pacienteEncontrado.isPresent()){
             pacienteService.modificarPaciente(paciente);
             String jsonResponse = "{\"mensaje\": \"El paciente " + pacienteEncontrado.get().getId() + " fue modificado.\"}";
@@ -65,7 +65,7 @@ public class PacienteController {
     //DELETE
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarPaciente(@PathVariable Integer id){
-        Optional<Paciente> pacienteEncontrado = pacienteService.buscarPacientePorId(id);
+        Optional<PacienteResponseDto> pacienteEncontrado = pacienteService.buscarPacientePorId(id);
         if(pacienteEncontrado.isPresent()) {
             pacienteService.eliminarPaciente(id);
             String jsonResponse = "{\"mensaje\": \"El paciente " + pacienteEncontrado.get().getId() + " fue eliminado.\"}";

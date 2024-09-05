@@ -2,9 +2,7 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.service.impl;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.TurnoModifyDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.TurnoRequestDto;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.OdontologoResponseDto;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.PacienteResponseDto;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.TurnoResponseDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.*;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Turno;
@@ -84,15 +82,15 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public TurnoResponseDto guardarTurno(TurnoRequestDto turnoRequestDto){
-        Optional<Paciente> paciente = pacienteService.buscarPacientePorId(turnoRequestDto.getPaciente_id());
+        Optional<PacienteResponseDto> pacienteResponseDto = pacienteService.buscarPacientePorId(turnoRequestDto.getPaciente_id());
         Optional<Odontologo> odontologo = odontologoService.buscarOdontologoPorId(turnoRequestDto.getOdontologo_id());
         Turno turno = new Turno();
         Turno turnoDesdeBD = null;
         TurnoResponseDto turnoResponseDto = null;
-        if(paciente.isPresent() && odontologo.isPresent()){
+        if(pacienteResponseDto.isPresent() && odontologo.isPresent()){
             // Se arma el turno a persistir en la base de datos obteniendo la información
             // desde el turnoRequestDto
-            turno.setPaciente(paciente.get());
+            turno.setPaciente(convertirResponseEnPaciente(pacienteResponseDto.get()));
             turno.setOdontologo(odontologo.get());
             turno.setFecha(LocalDate.parse(turnoRequestDto.getFecha()));
 
@@ -112,12 +110,12 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public void modificarTurno(TurnoModifyDto turnoModifyDto) {
-        Optional<Paciente> paciente = pacienteService.buscarPacientePorId(turnoModifyDto.getPaciente_id());
+        Optional<PacienteResponseDto> pacienteResponseDto = pacienteService.buscarPacientePorId(turnoModifyDto.getPaciente_id());
         Optional<Odontologo> odontologo = odontologoService.buscarOdontologoPorId(turnoModifyDto.getOdontologo_id());
-        if(paciente.isPresent() && odontologo.isPresent()){
+        if(pacienteResponseDto.isPresent() && odontologo.isPresent()){
             Turno turno = new Turno(
                     turnoModifyDto.getId(),
-                    paciente.get(), odontologo.get(), LocalDate.parse(turnoModifyDto.getFecha())
+                    convertirResponseEnPaciente(pacienteResponseDto.get()), odontologo.get(), LocalDate.parse(turnoModifyDto.getFecha())
             );
             turnoRepository.save(turno);
             logger.info("modificarTurno -> El turno " + turno.getId() + " se modificó correctamente.");
@@ -148,13 +146,13 @@ public class TurnoService implements ITurnoService {
                 turnoDesdeBD.getOdontologo().getId(), turnoDesdeBD.getOdontologo().getNroMatricula(),
                 turnoDesdeBD.getOdontologo().getApellido(), turnoDesdeBD.getOdontologo().getNombre()
         );
-        PacienteResponseDto pacienteResponseDto = new PacienteResponseDto(
+        TurnoPacienteResponseDto turnoPacienteResponseDto = new TurnoPacienteResponseDto (
                 turnoDesdeBD.getPaciente().getId(), turnoDesdeBD.getPaciente().getApellido(),
                 turnoDesdeBD.getPaciente().getNombre(), turnoDesdeBD.getPaciente().getDni()
         );
         TurnoResponseDto turnoResponseDto = new TurnoResponseDto(
                 turnoDesdeBD.getId(),
-                pacienteResponseDto, odontologoResponseDto,
+                turnoPacienteResponseDto, odontologoResponseDto,
                 turnoDesdeBD.getFecha().toString()
         );
         logger.info("El turnoResponseDto " + turnoResponseDto.getId() + " se armó desde el turno obtenido de la base de datos de forma manual.");
@@ -165,10 +163,18 @@ public class TurnoService implements ITurnoService {
     // De forma automática con modelmapper
     private TurnoResponseDto convertirTurnoEnResponse(Turno turno){
         TurnoResponseDto turnoResponseDto = modelMapper.map(turno, TurnoResponseDto.class);
-        turnoResponseDto.setPacienteResponseDto(modelMapper.map(turno.getPaciente(), PacienteResponseDto.class));
+        turnoResponseDto.setTurnoPacienteResponseDto(modelMapper.map(turno.getPaciente(), TurnoPacienteResponseDto.class));
         turnoResponseDto.setOdontologoResponseDto(modelMapper.map(turno.getOdontologo(), OdontologoResponseDto.class));
 
         logger.info("convertirTurnoEnResponse -> El turnoResponseDto " + turnoResponseDto.getId() + " se armó desde el turno obtenido de la base de datos forma automática con modelmapper.");
         return turnoResponseDto;
+    }
+
+    private Paciente convertirResponseEnPaciente(PacienteResponseDto pacienteResponseDto){
+        Paciente paciente = modelMapper.map(pacienteResponseDto, Paciente.class);
+        //paciente.setDomicilio(modelMapper.map(pacienteResponseDto.getDomicilioResponseDto(), DomicilioResponseDto.class));
+
+        logger.info("convertirResponseEnPaciente -> El paciente " + paciente.getId() + " se armó desde el turno obtenido de la base de datos forma automática con modelmapper.");
+        return paciente;
     }
 }

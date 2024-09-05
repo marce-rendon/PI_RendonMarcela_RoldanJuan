@@ -1,7 +1,12 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.service.impl;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.DomicilioResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.PacienteResponseDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.TurnoPacienteResponseDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.TurnoResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Turno;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.exception.ResourceNotFoundException;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.repository.IPacienteRepository;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
 import org.slf4j.Logger;
@@ -43,8 +48,15 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public Optional<Paciente> buscarPacientePorId(Integer id) {
-        return pacienteRepository.findById(id);
+    public Optional<PacienteResponseDto> buscarPacientePorId(Integer id) {
+        Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
+        if(pacienteEncontrado.isPresent()){
+            logger.info("buscarPacientePorId -> Paciente " + pacienteEncontrado.get().getId() + " encontrado.");
+            PacienteResponseDto pacienteRespuesta = convertirPacienteEnResponse(pacienteEncontrado.get());
+            return Optional.of(pacienteRespuesta);
+        } else {
+            throw new ResourceNotFoundException("Paciente no encontrado");
+        }
     }
 
     @Override
@@ -73,6 +85,7 @@ public class PacienteService implements IPacienteService {
     }
     private PacienteResponseDto convertirPacienteEnResponse(Paciente paciente){
         PacienteResponseDto pacienteResponseDto = modelMapper.map(paciente, PacienteResponseDto.class);
+        pacienteResponseDto.setDomicilioResponseDto(modelMapper.map(paciente.getDomicilio(), DomicilioResponseDto.class));
         logger.info("convertirPacienteEnResponse -> El pacienteResponseDto " + pacienteResponseDto.getId() + " se armó desde el paciente obtenido de la base de datos de forma automática con modelmapper.");
         return pacienteResponseDto;
     }
