@@ -33,12 +33,8 @@ public class PacienteController {
     //GET
     @GetMapping("/buscar/{id}")
     public ResponseEntity<PacienteResponseDto> buscarPacientePorId(@PathVariable Integer id){
-        Optional<PacienteResponseDto>  pacienteEncontrado = pacienteService.buscarPacientePorId(id);
-        if(pacienteEncontrado.isPresent()) {
-            return ResponseEntity.ok(pacienteEncontrado.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<PacienteResponseDto> pacienteEncontrado = pacienteService.buscarPacientePorId(id);
+        return ResponseEntity.ok(pacienteEncontrado.get());
     }
 
     //POST

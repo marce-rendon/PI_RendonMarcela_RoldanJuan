@@ -23,6 +23,7 @@ import java.util.Optional;
 public class PacienteService implements IPacienteService {
 
     static final Logger logger = LoggerFactory.getLogger(PacienteService.class);
+
     @Autowired
     private IPacienteRepository pacienteRepository;
 
@@ -38,24 +39,36 @@ public class PacienteService implements IPacienteService {
     @Override
     public List<PacienteResponseDto> buscarTodosLosPacientes() {
         List<Paciente> pacientesDesdeBD = pacienteRepository.findAll();
-        List<PacienteResponseDto> pacienteRespuesta = new ArrayList<>();
+        List<PacienteResponseDto> listPacientesResponseDto = new ArrayList<>();
 
-        for(Paciente t: pacientesDesdeBD){
-            logger.info("buscarTodosLosPacientes -> Paciente " + t.getId() + " encontrado.");
-            pacienteRespuesta.add(convertirPacienteEnResponse(t));
+        for(Paciente paciente : pacientesDesdeBD){
+            logger.info("buscarTodosLosPacientes -> Paciente " + paciente.getId() + " encontrado.");
+
+            // Se arma el pacienteResponseDto desde el turno obtenido de la base de datos
+            // De forma automática con modelmapper
+            PacienteResponseDto pacienteResponseDto = convertirPacienteEnPacienteResponseDto(paciente);
+            logger.info("buscarTodosLosPacientes -> PacienteResponseDto: " + pacienteResponseDto);
+
+            listPacientesResponseDto.add(pacienteResponseDto);
         }
-        return pacienteRespuesta;
+
+        return listPacientesResponseDto;
     }
 
     @Override
     public Optional<PacienteResponseDto> buscarPacientePorId(Integer id) {
         Optional<Paciente> pacienteEncontrado = pacienteRepository.findById(id);
+
         if(pacienteEncontrado.isPresent()){
             logger.info("buscarPacientePorId -> Paciente " + pacienteEncontrado.get().getId() + " encontrado.");
-            PacienteResponseDto pacienteRespuesta = convertirPacienteEnResponse(pacienteEncontrado.get());
-            return Optional.of(pacienteRespuesta);
+
+            PacienteResponseDto pacienteResponseDto = convertirPacienteEnPacienteResponseDto(pacienteEncontrado.get());
+            logger.info("buscarPacientePorId -> PacienteResponseDto: " + pacienteResponseDto);
+
+            return Optional.of(pacienteResponseDto);
         } else {
-            throw new ResourceNotFoundException("Paciente no encontrado");
+            logger.info("buscarPacientePorId -> El paciente " + id + " no se ecuentra en la base de datos.");
+            throw new ResourceNotFoundException("El paciente " + id + " no se ecuentra en la base de datos.");
         }
     }
 
@@ -83,10 +96,21 @@ public class PacienteService implements IPacienteService {
     public List<Paciente> buscarPorUnaParteApellido(String parte){
         return pacienteRepository.buscarPorParteApellido(parte);
     }
-    private PacienteResponseDto convertirPacienteEnResponse(Paciente paciente){
+    private PacienteResponseDto convertirPacienteEnPacienteResponseDto(Paciente paciente){
         PacienteResponseDto pacienteResponseDto = modelMapper.map(paciente, PacienteResponseDto.class);
-        pacienteResponseDto.setDomicilioResponseDto(modelMapper.map(paciente.getDomicilio(), DomicilioResponseDto.class));
-        logger.info("convertirPacienteEnResponse -> El pacienteResponseDto " + pacienteResponseDto.getId() + " se armó desde el paciente obtenido de la base de datos de forma automática con modelmapper.");
+        //pacienteResponseDto.setDomicilioResponseDto(modelMapper.map(paciente.getDomicilio(), DomicilioResponseDto.class));
+        logger.info("convertirPacienteEnPacienteResponseDto -> El pacienteResponseDto " + pacienteResponseDto.getId() + " se armó desde el paciente obtenido de la base de datos de forma automática con modelmapper.");
+
         return pacienteResponseDto;
     }
+
+    @Override
+    public Paciente convertirPacienteResponseDtoEnPaciente(PacienteResponseDto pacienteResponseDto){
+        Paciente paciente = modelMapper.map(pacienteResponseDto, Paciente.class);
+        //paciente.setDomicilio(modelMapper.map(pacienteResponseDto.getDomicilioResponseDto(), DomicilioResponseDto.class));
+
+        logger.info("convertirPacienteResponseDtoEnPaciente -> El paciente " + paciente.getId() + " se armó desde el paciente obtenido de la base de datos forma automática con modelmapper.");
+        return paciente;
+    }
+
 }

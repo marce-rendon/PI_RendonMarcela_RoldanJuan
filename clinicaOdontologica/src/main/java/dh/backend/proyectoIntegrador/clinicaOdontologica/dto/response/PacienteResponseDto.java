@@ -1,6 +1,7 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response;
 
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Domicilio;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,11 @@ public class PacienteResponseDto {
     private String dni;
 
     // Datos del domicilio
-    private DomicilioResponseDto domicilioResponseDto;
+    //private DomicilioResponseDto domicilioResponseDto;
+
+    @Override
+    public String toString() {
+        return GsonProvider.getGson().toJson(this);
+    }
+
 }

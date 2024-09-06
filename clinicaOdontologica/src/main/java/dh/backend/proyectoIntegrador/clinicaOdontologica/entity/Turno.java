@@ -31,9 +31,12 @@ public class Turno {
 
     private LocalDate fecha;
 
+    // Se movió el toString() al correspodiente DTO
+    /*
     @Override
     public String toString() {
         return GsonProvider.getGson().toJson(this);
     }
+    */
 
 }

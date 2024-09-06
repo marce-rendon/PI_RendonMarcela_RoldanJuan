@@ -3,7 +3,6 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.service;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.TurnoModifyDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.TurnoRequestDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.TurnoResponseDto;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Turno;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +19,5 @@ public interface ITurnoService {
     void eliminarTurno(Integer id);
 
     Optional<TurnoResponseDto> buscarTurnosPorPaciente(String pacienteApellido);
+
 }
