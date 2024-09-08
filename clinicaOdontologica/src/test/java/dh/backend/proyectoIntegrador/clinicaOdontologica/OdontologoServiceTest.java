@@ -1,5 +1,7 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.OdontologoRequestDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.OdontologoResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.impl.OdontologoService;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class OdontologoServiceTest {
-/*
+
     static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
 
     @Autowired
@@ -32,13 +34,13 @@ public class OdontologoServiceTest {
     @DisplayName("Testear que un odontologo fue cargado correctamente")
     void guardarOdontologoTest(){
         //Dado
-        Odontologo odontologo = Odontologo.builder()
+        OdontologoRequestDto odontologo = OdontologoRequestDto.builder()
                 .nombre("Lionel")
                 .apellido("Messi")
                 .nroMatricula("Mat12345")
                 .build();
         //cuando
-        Odontologo odontologoDesdeDb = odontologoService.guardarOdontologo(odontologo);
+        OdontologoResponseDto odontologoDesdeDb = odontologoService.guardarOdontologo(odontologo);
         // entonces
         assertNotNull(odontologoDesdeDb.getId());
     }
@@ -47,7 +49,7 @@ public class OdontologoServiceTest {
     @DisplayName("Testear que un odontologo pueda acceder por id")
     void consultarOdontologoPorIdTest(){
         //Dado
-        Odontologo odontologo = Odontologo.builder()
+        OdontologoRequestDto odontologo = OdontologoRequestDto.builder()
                 .nombre("Lionel")
                 .apellido("Messi")
                 .nroMatricula("Mat12345")
@@ -55,7 +57,7 @@ public class OdontologoServiceTest {
         odontologoService.guardarOdontologo(odontologo);
         Integer id = 1;
         //cuando
-        Optional<Odontologo> odontologoDesdeDb = odontologoService.buscarOdontologoPorId(id);
+        Optional<OdontologoResponseDto> odontologoDesdeDb = odontologoService.buscarOdontologoPorId(id);
         // entonces
         assertEquals(id, odontologoDesdeDb.orElseThrow().getId());
     }
@@ -64,17 +66,17 @@ public class OdontologoServiceTest {
     @DisplayName("Listar todos los odontologos")
     void ListarOdontologosTest(){
         //Dado
-        Odontologo odontologo = Odontologo.builder()
+        OdontologoRequestDto odontologo = OdontologoRequestDto.builder()
                 .nombre("Lionel")
                 .apellido("Messi")
                 .nroMatricula("Mat12345")
                 .build();
         odontologoService.guardarOdontologo(odontologo);
-        List<Odontologo> odontologos;
+        List<OdontologoResponseDto> odontologos;
         // cuando
         odontologos = odontologoService.buscarTodosLosOdontologos();
         // entonces
         assertFalse(odontologos.isEmpty());
     }
-*/
+
 }

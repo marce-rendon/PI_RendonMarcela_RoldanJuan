@@ -25,7 +25,7 @@ public class OdontologoResponseDto {
 
     // Datos del(los) turno(s)
     //@JsonManagedReference(value = "odontologoDto-turnoDto")
-    private Set<TurnoResponseDto> turnoSet;
+    //private Set<TurnoResponseDto> turnoSet;
 
     @Override
     public String toString() {
