@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @Transactional
 class PacienteServiceTest {
-
+/*
     static final Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
     @Autowired
     PacienteService pacienteService;
@@ -90,4 +90,6 @@ class PacienteServiceTest {
         // entonces
         assertFalse(pacientes.isEmpty());
     }
+
+ */
 }

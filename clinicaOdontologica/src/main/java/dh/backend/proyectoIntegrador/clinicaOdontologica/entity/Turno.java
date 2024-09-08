@@ -1,14 +1,12 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDate;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,12 +29,18 @@ public class Turno {
 
     private LocalDate fecha;
 
-    // Se movió el toString() al correspodiente DTO
-    /*
-    @Override
-    public String toString() {
-        return GsonProvider.getGson().toJson(this);
-    }
-    */
+//    @Override
+//    public String toString() {
+//        return GsonProvider.getGson().toJson(this);
+//    }
 
+//    @Override
+//    public String toString() {
+//        return "Turno{" +
+//                "id=" + id +
+//                ", paciente=" + paciente +
+//                ", odontologo=" + odontologo +
+//                ", fecha=" + fecha +
+//                '}';
+//    }
 }

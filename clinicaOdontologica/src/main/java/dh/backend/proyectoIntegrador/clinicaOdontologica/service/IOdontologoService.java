@@ -1,5 +1,7 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.service;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.OdontologoModifyDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.OdontologoRequestDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.OdontologoResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import java.util.List;
@@ -11,12 +13,12 @@ public interface IOdontologoService {
 
     Optional<OdontologoResponseDto> buscarOdontologoPorId(Integer id);
 
-    Odontologo guardarOdontologo(Odontologo odontologo);
+    OdontologoResponseDto guardarOdontologo(OdontologoRequestDto odontologoRequestDto);
 
-    void modificarOdontologo(Odontologo odontologo);
+    void modificarOdontologo(OdontologoModifyDto odontologoModifyDto);
 
     void eliminarOdontologo(Integer id);
 
-    Odontologo convertirOdontologoResponseDtoEnPaciente(OdontologoResponseDto odontologoResponseDto);
+    Odontologo convertirOdontologoResponseDtoEnOdontologo(OdontologoResponseDto odontologoResponseDto);
 
 }

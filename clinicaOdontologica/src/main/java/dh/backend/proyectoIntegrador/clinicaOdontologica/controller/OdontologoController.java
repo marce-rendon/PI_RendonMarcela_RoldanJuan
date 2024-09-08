@@ -1,8 +1,13 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.OdontologoModifyDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.OdontologoRequestDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.PacienteModifyDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.OdontologoResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IOdontologoService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +17,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/odontologo")
 public class OdontologoController {
+
+    @Autowired
     private IOdontologoService odontologoService;
 
+    // Cuando se usa @Autowired, ya no se requiere el constructo para inyectar la dependencia IOdontologoService
+    /*
     public OdontologoController(IOdontologoService odontologoService) {
         this.odontologoService = odontologoService;
     }
+    */
 
     //GET
     @GetMapping("/buscartodos")
@@ -27,43 +37,30 @@ public class OdontologoController {
     //GET
     @GetMapping("/buscar/{id}")
     public ResponseEntity<OdontologoResponseDto> buscarOdontologoPorId(@PathVariable Integer id){
-        Optional<OdontologoResponseDto> odontologo = odontologoService.buscarOdontologoPorId(id);
-        return ResponseEntity.ok(odontologo.get());
+        Optional<OdontologoResponseDto> odontologoEncontrado = odontologoService.buscarOdontologoPorId(id);
+        return ResponseEntity.ok(odontologoEncontrado.get());
     }
 
     //POST
     @PostMapping("/guardar")
-    public ResponseEntity<Odontologo> agregarOdontologo(@RequestBody Odontologo odontologo){
+    public ResponseEntity<OdontologoResponseDto> guardarOdontologo(@Valid @RequestBody OdontologoRequestDto odontologoRequestDto){
         // Jackson convierte el objeto JSON a un objeto Java "Odontologo"
-        return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
+        return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologoRequestDto));
     }
 
     //PUT
     @PutMapping("/modificar")
-    public ResponseEntity<String> modificarOdontologo(@RequestBody Odontologo odontologo){
-        Optional<OdontologoResponseDto> odontologoEncontrado = odontologoService.buscarOdontologoPorId(odontologo.getId());
-        if(odontologoEncontrado.isPresent()){
-            odontologoService.modificarOdontologo(odontologo);
-            String jsonResponse = "{\"mensaje\": \"El paciente " + odontologoEncontrado.get().getId() + " fue modificado.\"}";
-            // String jsonResponse = "{\"mensaje\": \"El odontólogo fue modificado.\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public ResponseEntity<String> modificarOdontologo(@Valid @RequestBody OdontologoModifyDto odontologoModifyDto){
+        odontologoService.modificarOdontologo(odontologoModifyDto);
+        return ResponseEntity.ok("{\"mensaje\" : \"El odontólogo "+ odontologoModifyDto.getId() +" fue modificado\"}");
     }
 
     //DELETE
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarOdontologo(@PathVariable Integer id){
-        Optional<OdontologoResponseDto> odontologoEncontrado = odontologoService.buscarOdontologoPorId(id);
-        if(odontologoEncontrado.isPresent()) {
-            odontologoService.eliminarOdontologo(id);
-            String jsonResponse = "{\"mensaje\": \"El paciente " + odontologoEncontrado.get().getId() + " fue eliminado.\"}";
-            // String jsonResponse = "{\"mensaje\": \"El odontólogo fue eliminado.\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        odontologoService.eliminarOdontologo(id);
+        String jsonResponse = "{\"mensaje\": \"El odontólogo " + id + " fue eliminado.\"}";
+        return ResponseEntity.ok(jsonResponse);
     }
 
 }

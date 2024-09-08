@@ -9,14 +9,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OdontologoModifyDto {
+public class DomicilioRequestDto {
 
-    private Integer id;
+    private String calle;
 
-    private String nombre;
+    private int numero;
 
-    private String apellido;
+    private String localidad;
 
-    private String nroMatricula;
-
+    private String provincia;
 }

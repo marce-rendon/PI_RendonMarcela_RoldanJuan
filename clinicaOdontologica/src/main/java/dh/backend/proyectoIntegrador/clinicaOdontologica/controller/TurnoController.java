@@ -4,6 +4,7 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.TurnoModify
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.TurnoRequestDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.TurnoResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.ITurnoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,15 +40,15 @@ public class TurnoController {
 
     //POST
     @PostMapping("/guardar")
-    public ResponseEntity<TurnoResponseDto> guardarTurno(@RequestBody TurnoRequestDto turnoRequestDto){
+    public ResponseEntity<TurnoResponseDto> guardarTurno(@Valid @RequestBody TurnoRequestDto turnoRequestDto){
         return ResponseEntity.ok(turnoService.guardarTurno(turnoRequestDto));
     }
 
     //PUT
     @PutMapping("/modificar")
-    public ResponseEntity<String> modificarTurno(@RequestBody TurnoModifyDto turnoModifyDto){
+    public ResponseEntity<String> modificarTurno(@Valid @RequestBody TurnoModifyDto turnoModifyDto){
         turnoService.modificarTurno(turnoModifyDto);
-        return ResponseEntity.ok("{\"mensaje\": \"El turno "+ turnoModifyDto.getId() +" fue modificado\"}");
+        return ResponseEntity.ok("{\"mensaje\" : \"El turno "+ turnoModifyDto.getId() +" fue modificado\"}");
     }
 
     //DELETE

@@ -1,10 +1,12 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.controller;
 
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.PacienteModifyDto;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.PacienteRequestDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.PacienteResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IPacienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -39,37 +41,24 @@ public class PacienteController {
 
     //POST
     @PostMapping("/guardar")
-    public ResponseEntity<Paciente> guardarPaciente(@RequestBody Paciente paciente){
+    public ResponseEntity<PacienteResponseDto> guardarPaciente(@Valid @RequestBody PacienteRequestDto pacienteRequestDto){
         // Jackson convierte el objeto JSON a un objeto Java "Paciente"
-        return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
+        return ResponseEntity.ok(pacienteService.guardarPaciente(pacienteRequestDto));
     }
 
     //PUT
     @PutMapping("/modificar")
-    public ResponseEntity<String> modificarPaciente(@RequestBody Paciente paciente){
-        Optional<PacienteResponseDto> pacienteEncontrado = pacienteService.buscarPacientePorId(paciente.getId());
-        if(pacienteEncontrado.isPresent()){
-            pacienteService.modificarPaciente(paciente);
-            String jsonResponse = "{\"mensaje\": \"El paciente " + pacienteEncontrado.get().getId() + " fue modificado.\"}";
-            // String jsonResponse = "{\"mensaje\": \"El paciente fue modificado.\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public ResponseEntity<String> modificarPaciente(@Valid @RequestBody PacienteModifyDto pacienteModifyDto){
+        pacienteService.modificarPaciente(pacienteModifyDto);
+        return ResponseEntity.ok("{\"mensaje\" : \"El paciente "+ pacienteModifyDto.getId() +" fue modificado\"}");
     }
 
     //DELETE
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarPaciente(@PathVariable Integer id){
-        Optional<PacienteResponseDto> pacienteEncontrado = pacienteService.buscarPacientePorId(id);
-        if(pacienteEncontrado.isPresent()) {
-            pacienteService.eliminarPaciente(id);
-            String jsonResponse = "{\"mensaje\": \"El paciente " + pacienteEncontrado.get().getId() + " fue eliminado.\"}";
-            // String jsonResponse = "{\"mensaje\": \"El paciente fue eliminado.\"}";
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        pacienteService.eliminarPaciente(id);
+        String jsonResponse = "{\"mensaje\": \"El paciente " + id + " fue eliminado.\"}";
+        return ResponseEntity.ok(jsonResponse);
     }
 
     @GetMapping("/buscarApellidoNombre/{apellido}/{nombre}")

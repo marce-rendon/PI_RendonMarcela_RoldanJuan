@@ -1,7 +1,6 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,18 +17,16 @@ public class Odontologo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nroMatricula;
-    private String apellido;
+
     private String nombre;
+
+    private String apellido;
+
+    private String nroMatricula;
 
     @OneToMany(mappedBy = "odontologo", cascade = CascadeType.REMOVE)
     @JsonManagedReference(value = "odontologo-turno")
     //@JsonIgnore
     private Set<Turno> turnoSet;
-
-    @Override
-    public String toString() {
-        return GsonProvider.getGson().toJson(this);
-    }
 
 }

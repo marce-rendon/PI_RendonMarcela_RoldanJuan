@@ -1,5 +1,6 @@
 package dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class TurnoResponseDto {
     private PacienteResponseDto pacienteResponseDto;
 
     // datos del odontologo
+    //@JsonManagedReference(value = "odontologoDto-turnoDto")
     private OdontologoResponseDto odontologoResponseDto;
 
     private String fecha;
