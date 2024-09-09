@@ -5,6 +5,7 @@ import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.OdontologoR
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request.PacienteModifyDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.dto.response.OdontologoResponseDto;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Odontologo;
+import dh.backend.proyectoIntegrador.clinicaOdontologica.entity.Paciente;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.service.IOdontologoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,21 @@ public class OdontologoController {
         odontologoService.eliminarOdontologo(id);
         String jsonResponse = "{\"mensaje\": \"El odontólogo " + id + " fue eliminado.\"}";
         return ResponseEntity.ok(jsonResponse);
+    }
+
+    @GetMapping("/buscarNombre/{nombre}")
+    public ResponseEntity<List<OdontologoResponseDto>> buscarPorNombre(@PathVariable String nombre){
+        return ResponseEntity.ok(odontologoService.buscarPorNombreLike(nombre));
+    }
+
+    @GetMapping("/buscarApellido/{apellido}")
+    public ResponseEntity<List<OdontologoResponseDto>> buscarPorApellido(@PathVariable String apellido){
+        return ResponseEntity.ok(odontologoService.buscarPorApellidoLike(apellido));
+    }
+
+    @GetMapping("/buscarMatricula/{matricula}")
+    public ResponseEntity<OdontologoResponseDto> buscarPorMatricula(@PathVariable String matricula){
+        return ResponseEntity.ok(odontologoService.buscarPorMatricula(matricula));
     }
 
 }

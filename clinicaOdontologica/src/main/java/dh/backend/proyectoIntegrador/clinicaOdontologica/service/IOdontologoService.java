@@ -19,6 +19,12 @@ public interface IOdontologoService {
 
     void eliminarOdontologo(Integer id);
 
+    List<OdontologoResponseDto> buscarPorNombreLike(String nombre);
+
+    List<OdontologoResponseDto> buscarPorApellidoLike(String apellido);
+
+    OdontologoResponseDto buscarPorMatricula(String matricula);
+
     Odontologo convertirOdontologoResponseDtoEnOdontologo(OdontologoResponseDto odontologoResponseDto);
 
 }

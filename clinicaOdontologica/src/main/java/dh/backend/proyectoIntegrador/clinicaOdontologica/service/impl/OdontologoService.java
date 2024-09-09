@@ -133,6 +133,57 @@ public class OdontologoService implements IOdontologoService {
         logger.info("eliminarTurno -> El odontólogo " + odontologoEncontrado.get().getId() + " se eliminó de la base de datos.");
     }
 
+    @Override
+    public List<OdontologoResponseDto> buscarPorNombreLike(String nombre) {
+        // Busca el nombre del odontólogo que sea exactamente igual al nombre del parámetro recibido
+        List<Odontologo> odontologosDesdeBD = odontologoRepository.findByNombreLike(nombre);
+        List<OdontologoResponseDto> listOdontologosResponseDto = new ArrayList<>();
+
+        for(Odontologo odontologo : odontologosDesdeBD){
+            logger.info("buscarPorNombreLike -> Odontologo " + odontologo.getId() + " encontrado.");
+
+            // Se arma el odontologoResponseDto desde el ondontólogo obtenido de la base de datos
+            // De forma automática con modelmapper
+            OdontologoResponseDto odontologoResponseDto = convertirOdontologoEnOdontologoResponseDto(odontologo);
+            logger.info("buscarPorNombreLike -> OdontologoResponseDto: " + odontologoResponseDto);
+
+            listOdontologosResponseDto.add(odontologoResponseDto);
+        }
+
+        return listOdontologosResponseDto;
+    }
+
+    @Override
+    public List<OdontologoResponseDto> buscarPorApellidoLike(String apellido) {
+        // Busca el apellido del odontólogo que sea exactamente igual al apellido del parámetro recibido
+        List<Odontologo> odontologosDesdeBD = odontologoRepository.findByApellidoLike(apellido);
+        List<OdontologoResponseDto> listOdontologosResponseDto = new ArrayList<>();
+
+        for(Odontologo odontologo : odontologosDesdeBD){
+            logger.info("buscarPorApellidoLike -> Odontologo " + odontologo.getId() + " encontrado.");
+
+            // Se arma el odontologoResponseDto desde el ondontólogo obtenido de la base de datos
+            // De forma automática con modelmapper
+            OdontologoResponseDto odontologoResponseDto = convertirOdontologoEnOdontologoResponseDto(odontologo);
+            logger.info("buscarPorApellidoLike -> OdontologoResponseDto: " + odontologoResponseDto);
+
+            listOdontologosResponseDto.add(odontologoResponseDto);
+        }
+
+        return listOdontologosResponseDto;
+    }
+
+    @Override
+    public OdontologoResponseDto buscarPorMatricula(String matricula) {
+        // Busca la matricula del odontólogo que sea exactamente igual a la matricula del parámetro recibido
+        Odontologo odontologoDesdeBD = odontologoRepository.buscarMatricula(matricula);
+
+        OdontologoResponseDto odontologoResponseDto = convertirOdontologoEnOdontologoResponseDto(odontologoDesdeBD);
+        logger.info("buscarPorMatricula -> OdontologoResponseDto: " + odontologoResponseDto);
+
+        return odontologoResponseDto;
+    }
+
     private OdontologoResponseDto convertirOdontologoEnOdontologoResponseDto(Odontologo odontologo){
         OdontologoResponseDto odontologoResponseDto = modelMapper.map(odontologo, OdontologoResponseDto.class);
 
