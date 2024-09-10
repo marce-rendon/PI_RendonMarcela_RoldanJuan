@@ -3,15 +3,14 @@ package dh.backend.proyectoIntegrador.clinicaOdontologica.dto.request;
 import dh.backend.proyectoIntegrador.clinicaOdontologica.utils.GsonProvider;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+
 public class TurnoRequestDto {
 
     //@NotBlank(message = "El código id del paciente no puede ser nulo.")
